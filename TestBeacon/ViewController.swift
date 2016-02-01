@@ -28,29 +28,14 @@ class ViewController: UIViewController,CLLocationManagerDelegate,UITableViewDele
 		setupBeacon()
   }
 
-  //pragma mark - UITableView
-  internal func setupTableView(){
-    print("setupTableView")
-		tableView = UITableView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height))
-    tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "MyCell")
-    tableView.dataSource = self
-    tableView.delegate = self
-    self.view.addSubview(tableView)
-  }
-
   override func viewDidAppear(animated: Bool) {
-
-    
     if((locationManager?.respondsToSelector("requestAlwaysAuthorization")) != nil) {
       if ((locationManager?.respondsToSelector("requestAlwaysAuthorization"))!) == false {
-				locationManager?.requestAlwaysAuthorization()
+        locationManager?.requestAlwaysAuthorization()
       }else {
-				locationManager.startRangingBeaconsInRegion(beaconRegion!)
+        locationManager.startRangingBeaconsInRegion(beaconRegion!)
       }
-
     }
-
-
   }
 
   override func viewDidDisappear(animated: Bool) {
@@ -62,6 +47,17 @@ class ViewController: UIViewController,CLLocationManagerDelegate,UITableViewDele
     super.didReceiveMemoryWarning()
     
   }
+
+  //pragma mark - UITableView
+  internal func setupTableView(){
+    print("setupTableView")
+		tableView = UITableView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height))
+    tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "MyCell")
+    tableView.dataSource = self
+    tableView.delegate = self
+    self.view.addSubview(tableView)
+  }
+
 
   // cellがクリックされた時の挙動
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -86,7 +82,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate,UITableViewDele
     return cell
   }
 
-
   //pragma mark - Location Manager
   internal func setupBeacon(){
     print("setupBeacon")
@@ -95,7 +90,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate,UITableViewDele
     locationManager = CLLocationManager()
     locationManager.delegate = self
     beaconArray = NSMutableArray()
-
   }
 
 
@@ -106,28 +100,28 @@ class ViewController: UIViewController,CLLocationManagerDelegate,UITableViewDele
 		self.tableView.reloadData()
   }
 
-  // 領域観測が開始した場合
-  func locationManager(manager: CLLocationManager, didStartMonitoringForRegion region: CLRegion) {
-    self.sendLocalNotificationForMessage("Start Monitoring Region")
-  }
-
-  // 領域に侵入した場合
-  func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
-    self.sendLocalNotificationForMessage("Enter Region")
-
-    if(region.isMemberOfClass(CLBeaconRegion) && CLLocationManager.isRangingAvailable()) {
-      self.locationManager?.startRangingBeaconsInRegion(region as! CLBeaconRegion)
-    }
-  }
-
-  // 領域から退出した場合
-  func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
-    self.sendLocalNotificationForMessage("Enter Region")
-
-    if(region.isMemberOfClass(CLBeaconRegion) && CLLocationManager.isRangingAvailable()) {
-      self.locationManager?.stopRangingBeaconsInRegion(region as! CLBeaconRegion)
-    }
-  }
+//  // 領域観測が開始した場合
+//  func locationManager(manager: CLLocationManager, didStartMonitoringForRegion region: CLRegion) {
+//    self.sendLocalNotificationForMessage("Start Monitoring Region")
+//  }
+//
+//  // 領域に侵入した場合
+//  func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
+//    self.sendLocalNotificationForMessage("Enter Region")
+//
+//    if(region.isMemberOfClass(CLBeaconRegion) && CLLocationManager.isRangingAvailable()) {
+//      self.locationManager?.startRangingBeaconsInRegion(region as! CLBeaconRegion)
+//    }
+//  }
+//
+//  // 領域から退出した場合
+//  func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
+//    self.sendLocalNotificationForMessage("Enter Region")
+//
+//    if(region.isMemberOfClass(CLBeaconRegion) && CLLocationManager.isRangingAvailable()) {
+//      self.locationManager?.stopRangingBeaconsInRegion(region as! CLBeaconRegion)
+//    }
+//  }
 
   //pragma mark - push
   func sendLocalNotificationForMessage(message: NSString!) {
